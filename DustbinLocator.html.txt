@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dustbin Locator - Chandigarh</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center; margin:10px;">Chandigarh Dustbin Locator</h2>
+  <div id="map"></div>
+
+  <script>
+  function initMap() {
+    const chandigarh = { lat: 30.7333, lng: 76.7794 };
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 13,
+      center: chandigarh,
+    });
+
+    const trashIcon = "https://cdn-icons-png.flaticon.com/512/3082/3082383.png";
+
+    // Sample dustbin data (can be expanded or loaded from a backend)
+    const dustbins = [
+      {
+        lat: 30.7415,
+        lng: 76.7681,
+        id: "DB-101",
+        lastCleaned: "April 10, 2025",
+        status: "Empty"
+      },
+      {
+        lat: 30.7250,
+        lng: 76.7811,
+        id: "DB-102",
+        lastCleaned: "April 9, 2025",
+        status: "Full"
+      },
+      {
+        lat: 30.7522,
+        lng: 76.7920,
+        id: "DB-103",
+        lastCleaned: "April 11, 2025",
+        status: "Empty"
+      },
+      {
+        lat: 30.7206,
+        lng: 76.7685,
+        id: "DB-104",
+        lastCleaned: "April 7, 2025",
+        status: "Full"
+      },
+      {
+        lat: 30.7300,
+        lng: 76.8000,
+        id: "DB-105",
+        lastCleaned: "April 10, 2025",
+        status: "Half Full"
+      }
+    ];
+
+    // Add markers with info windows
+    dustbins.forEach((bin, index) => {
+      const marker = new google.maps.Marker({
+        position: { lat: bin.lat, lng: bin.lng },
+        map,
+        title: `Dustbin ${bin.id}`,
+        icon: {
+          url: trashIcon,
+          scaledSize: new google.maps.Size(32, 32),
+        }
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `
+          <div style="font-size: 14px;">
+            <strong>Dustbin ID:</strong> ${bin.id}<br/>
+            <strong>Last Cleaned:</strong> ${bin.lastCleaned}<br/>
+            <strong>Status:</strong> <span style="color: ${bin.status === "Full" ? 'red' : 'green'};">${bin.status}</span>
+          </div>
+        `
+      });
+
+      marker.addListener("click", () => {
+        infoWindow.open(map, marker);
+      });
+    });
+  }
+</script>
+
+  <!-- Replace YOUR_API_KEY with your actual Google Maps API key -->
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6tuwbkkHscXyVb5IP6WSCIFzVT7HZ0Dk&callback=initMap">
+  </script>
+</body>
+</html>
